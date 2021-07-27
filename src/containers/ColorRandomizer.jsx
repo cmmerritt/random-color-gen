@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component } from 'react';
 import { selectRandomElement } from '../components/app/SelectRandomElement';
 
@@ -13,41 +14,43 @@ const colors = [
 export default class ColorRandomizer extends Component {
   state = {
     randomColor: 'red',
+    url: ''
   }
 
   componentDidMount() {
     this.interval = setInterval(() => {
       const selectedColor = selectRandomElement(colors);
       this.setState({
-        randomColor: selectedColor
+        randomColor: selectedColor,
+        url: this.state.url
       });
     }, 1000);
   }
-  //   const randomColor = (selectRandomElement('red', 'yellow', 'blue', 
-  //     'purple', 'green', 'orange'));
-  //   this.setState({ randomColor });
-  //   setInterval(randomColor, 1000);
-  // 
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.randomColor === prevState.randomColor) {
+      this.interval = setInterval(() => {this.setState({
+      // eslint-disable-next-line max-len
+        randomColor: this.state.randomColor,
+        url: 'https://i.dailymail.co.uk/i/pix/2016/03/18/15/324D202500000578-3498922-image-a-33_1458315465874.jpg' 
+      });
+        
+      }, 1000);
+    }
+  }
 
   render() {
-    // const colors = [
-    //   'red',
-    //   'yellow',
-    //   'blue',
-    //   'purple',
-    //   'green',
-    //   'orange'
-    // ];
-
     return (
       <>
         <div
           style = {{ 
             backgroundColor: this.state.randomColor,
             width: '200px',
-            height: '200px'
+            height: '200px',
           }}
-        ></div>
+        >
+          <img src = {this.state.url} />
+        </div>
       </>
     );
   }
